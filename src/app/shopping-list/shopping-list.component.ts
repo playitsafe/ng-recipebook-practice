@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from './shopping-list.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list',
@@ -9,33 +10,29 @@ import { ShoppingListService } from './shopping-list.service';
   styleUrls: ['./shopping-list.component.css'],
   //providers: [ShoppingListService]
 })
-export class ShoppingListComponent implements OnInit {
-  // ingredients: Ingredient[] = [
-  //   new Ingredient('Apples', 5),
-  //   new Ingredient('Tomatoes', 10),
-  // ];
+export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ingredients: Ingredient[];
+  private subscription: Subscription;
 
   constructor(private shoppinglistService: ShoppingListService) { }
 
   ngOnInit() {
 
     this.ingredients = this.shoppinglistService.getIngredients();
-    this.shoppinglistService.ingredientChanged.subscribe(
+    this.subscription = this.shoppinglistService.ingredientChanged.subscribe(
       (ingredients: Ingredient[]) => {
         this.ingredients = ingredients;
-      }
-    );
-
-    //this.shoppinglistService.itemAdded.subscribe(
-      // (ingredient: Ingredient) => {
-      //   this.ingredients.push(ingredient);
-      // }
-    //);
+      });
   }
 
-  // onIngredientAdded(ingredient: Ingredient) {
-  //   this.ingredients.push(ingredient);
-  // }
+  onEditItem(index: number) {
+    //take the index to the shoping edit comp
+    this.shoppinglistService.startEditing.next(index);
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    this.subscription.unsubscribe();
+  }
 }
