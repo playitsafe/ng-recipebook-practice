@@ -2,10 +2,14 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
     //only redirect if the full path is empty
-    { path: '', redirectTo: '/recipes', pathMatch: 'full' },
+    //---{ path: '', redirectTo: '/recipes', pathMatch: 'full' },
+    { path: '', component: HomeComponent },
+    //add a route point to the file#class name
+    { path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule' },
     // { path: 'recipes', component: RecipesComponent, children: [
     //     { path: '', component: RecipeStartComponent },
     //     { path: 'new', component: RecipeEditComponent, canActivate: [AuthGuard] },
