@@ -71,6 +71,10 @@ export class RecipeEditComponent implements OnInit {
       })
     );
   }
+
+  getControls() {
+    return (<FormArray>this.recipeForm.get('ingredients')).controls;
+  }
   //called when ever router changes
   private initForm() {
     let recipeName = '';
