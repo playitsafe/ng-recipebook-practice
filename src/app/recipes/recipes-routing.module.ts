@@ -21,7 +21,8 @@ const recipesRoutes: Routes = [
         //forRoot only gives to app module
         RouterModule.forChild(recipesRoutes)
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers: [AuthGuard]
 
 })
 export class RecipesRoutingModule {}
